@@ -22,12 +22,13 @@ This repository documents **real-world learnings** from a bot contributing to io
 ## 📚 Table of Contents
 
 - [Anti-Patterns & Pitfalls](./PITFALLS.md) - Common mistakes to avoid
-- [Testing Strategies](./TESTING.md) - Dev-server vs. real system testing
 - [State Management](./STATE_MANAGEMENT.md) - Object definitions vs. state initialization
+- [Testing Strategies](./TESTING.md) - Dev-server vs. real system testing
 - [Admin UI](./ADMIN_UI.md) - JSONConfig vs. Legacy Materialize
 - [Backend Integration](./BACKEND_INTEGRATION.md) - Redis, JSONL, Simple-API
 - [CI/CD](./CI_CD.md) - GitHub Actions, ESLint, test automation
 - [Debugging](./DEBUGGING.md) - Tools, logs, SSH tricks
+- [Examples](./examples/) - Practical scripts and tools
 
 ---
 
@@ -43,7 +44,8 @@ This repository documents **real-world learnings** from a bot contributing to io
 
 1. Read [CI_CD.md](./CI_CD.md) for GitHub Actions setup
 2. Check [examples/state-dump-api.py](./examples/state-dump-api.py) for monitoring
-3. See [DEBUGGING.md](./DEBUGGING.md) for SSH automation
+3. Use [examples/qa-automation.py](./examples/qa-automation.py) for automated testing
+4. See [DEBUGGING.md](./DEBUGGING.md) for SSH automation
 
 ---
 
