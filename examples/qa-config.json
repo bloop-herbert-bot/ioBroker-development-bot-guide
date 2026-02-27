@@ -1,0 +1,36 @@
+{
+  "features": {
+    "memory.status": {
+      "name": "Memory Monitoring",
+      "critical": true
+    },
+    "memory.usedPercent": {
+      "name": "Memory Monitoring",
+      "critical": true
+    },
+    "logs.totalErrors": {
+      "name": "Log Monitoring",
+      "critical": true
+    },
+    "logs.totalWarnings": {
+      "name": "Log Monitoring",
+      "critical": true
+    },
+    "logs.status": {
+      "name": "Log Monitoring",
+      "critical": true
+    },
+    "redis.status": {
+      "name": "Redis Monitoring",
+      "critical": true
+    },
+    "redis.connected": {
+      "name": "Redis Monitoring",
+      "critical": true
+    },
+    "inspector.orphanedStates.count": {
+      "name": "State Inspector",
+      "critical": false
+    }
+  }
+}
