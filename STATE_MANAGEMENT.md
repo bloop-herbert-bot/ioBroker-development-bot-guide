@@ -412,4 +412,80 @@ Before creating a PR with new states:
 
 ---
 
-_Auto-updated from issue feedback and PR reviews_
+## 🚨 Critical Learning: State Init BEFORE Conditional Logic (PR #165)
+
+**Problem:** Features with conditional logic (e.g., Redis-only) that return early BEFORE initializing states.
+
+**Anti-Pattern:**
+```javascript
+async runRedisCheck() {
+  const config = await this.detectRedisConfig();
+  
+  // ❌ WRONG: Early return before state init!
+  if (!config.objectsIsRedis && !config.statesIsRedis) {
+    await this.setStateAsync('redis.status', 'skipped', true);
+    return; // States never initialized!
+  }
+  
+  // State initialization here (never reached if skipped)
+  await this.createRedisStates();
+}
+```
+
+**Correct Pattern:**
+```javascript
+async runRedisCheck() {
+  // ✅ CORRECT: State init FIRST!
+  await this.createRedisStates();
+  
+  const config = await this.detectRedisConfig();
+  
+  if (!config.objectsIsRedis && !config.statesIsRedis) {
+    // States exist, just set status
+    await this.setStateAsync('redis.status', 'skipped', true);
+    return;
+  }
+  
+  // Continue with actual monitoring
+}
+```
+
+**Why This Matters:**
+- States defined in `io-package.json` but never get values
+- QA tools report "object_missing" (Object exists, State missing)
+- Features appear broken even on systems where they don't apply
+
+**Rule:** State initialization MUST happen before any `return` statement!
+
+---
+
+## 🔄 State Creation Requires Adapter Restart (PR #170)
+
+**Learning:** `createStates()` runs ONCE at adapter startup. New states don't appear until restart!
+
+**Scenario:**
+1. PR #170 adds `memory.timestamp` and `disk.timestamp` states
+2. PR gets merged
+3. Code updated via `git pull` on live system
+4. **States still missing!** ❌
+
+**Why:**
+- `onReady()` method (where `createStates()` is called) only runs when adapter starts
+- `git pull` updates code, but doesn't restart adapter
+- New states defined in code, but never initialized
+
+**Solution:**
+```bash
+# After merging PR with new states:
+iobroker restart system-health.0
+```
+
+**Automation Idea:**
+- Add post-merge hook to restart adapter automatically
+- Or: Check for state schema changes, prompt restart if needed
+
+**Anti-Pattern:** Assuming states appear immediately after code update
+
+---
+
+_Auto-updated from issue feedback and PR reviews (Last update: 2026-03-09)_

@@ -550,4 +550,59 @@ await this.getStateAsync('memory.usedPercent');
 
 ---
 
-_Auto-updated from Admin UI learnings_
+## 🎨 Collapsible Sections for Large Dashboards (PR #166)
+
+**Problem:** Large dashboards with 20+ widgets become cluttered and hard to navigate.
+
+**Solution:** Use collapsible panels to group related features.
+
+**Pattern:**
+```json5
+{
+  "type": "panel",
+  "label": "Memory Monitoring",
+  "collapsible": true,
+  "collapsed": false,
+  "items": {
+    "memory_totalMB": {
+      "type": "staticText",
+      "label": "Total RAM",
+      "text": "{{ val: 'memory.totalMB' }} MB",
+      "newLine": true,
+      "sm": 6
+    },
+    "memory_usedMB": {
+      "type": "staticText", 
+      "label": "Used RAM",
+      "text": "{{ val: 'memory.usedMB' }} MB",
+      "sm": 6
+    }
+  }
+}
+```
+
+**Key Properties:**
+- `collapsible: true` - Makes panel expandable/collapsible
+- `collapsed: false` - Default state (expanded)
+- `collapsed: true` - Start collapsed (useful for rarely-used features)
+
+**When to Use:**
+- **Expanded by default:** Core features (Memory, Disk, Logs)
+- **Collapsed by default:** Optional features (Redis, Advanced Settings)
+- **Benefits:** Reduced visual clutter, faster page load, better UX
+
+**Layout Tips:**
+- Use `"newLine": true, "sm": 12` for full-width elements
+- Use `"sm": 6` for side-by-side widgets (2 columns)
+- Use `"sm": 4` for 3 columns (on larger screens)
+
+**Example:** system-health dashboard has 5 collapsible sections:
+1. Memory (expanded)
+2. Disk (expanded)
+3. Redis (collapsed - only relevant if Redis backend)
+4. Logs (expanded)
+5. State Inspector (expanded)
+
+---
+
+_Auto-updated from Admin UI learnings (Last update: 2026-03-09)_
